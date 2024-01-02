@@ -8,13 +8,16 @@ I worked on python 3.9 in Anaconda Jupyter Notebook. The following libraries wer
 
 ## Data exploration
 The database used for this project is the Acted Emotional Speech Dynamic Database (AESDD) that displays 605 recordings of 6 actors speaking 20 different lines/utterances for each of 5 distinct emotions in Greek language – anger, disgust, fear, happiness, sadness. The size of the database is 605. I listened to some of the audios on my computer to familiarize myself with the data and attempted to load the recordings. The audio for the 5th line of actor 3 depicting sadness was unloadable and unreadable, raising the following error:
+
 LibsndfileError: Error opening 'C:/Users/jadea/Acted Emotional Speech Dynamic Database\\Acted Emotional Speech Dynamic Database\\sadness\\s05 (3).wav': Error in WAV file. No 'data' chunk marker.
+
 I removed this recording from the database. The numbers of recordings for each emotion are almost equal, so we can state that the dataset is well balanced. The sampling rate is 44100HZ for all recordings. Concerning the lengths of the audios, underneath is the histogram of the distribution of the durations of audios:
 
 ![image](https://github.com/JadeArpaliangeas/Speech-Emotion-Recognition-CNN/assets/149436763/65139538-2b96-4ff5-9f54-30562b7d25fe)
 
 We observe that most of the recordings have lengths comprised between 2 and 8 seconds. The mean duration is 4.10 seconds and the median is 3.78s. I extracted the path of the audio lasting more than 12 seconds: ‘…\sadness\s19 (6).wav’. I listened to it and realised that it was mostly silence, so I decided to remove it. 
 The final number of recordings was then 603.
+
 Here is the plot of the signal of the 1st recording of the anger emotion (a01 (1)):
  
 ![image](https://github.com/JadeArpaliangeas/Speech-Emotion-Recognition-CNN/assets/149436763/758c2ee0-dd6b-4b99-93ed-1038306b627f)
@@ -23,6 +26,7 @@ Here is the plot of the signal of the 1st recording of the anger emotion (a01 (1
 
 ### Segments generation
 The fact that the durations of the samples are not constant is an issue we must tackle. There are several possibilities: time stretching (in order to match the length of the audios with a target length), or cutting segments of equal length within the recordings. I chose the latter method. As a result, I could increase the number of observation by 84%, by choosing a target duration of 3 seconds (assuming that the emotion is displayed all along the initial recording). 
+
 The number of sub-samples/segments generated from each recording in equal to the upper integer part of the length of recording (in seconds) divided by 3. (see code, function: audio_preprocessing). For instance, if len(audio) is 4, it is decomposed into 2 sub-recordings of duration 3seconds. As a result, some of the sub-samples are overlapping. I chose this method because it is a way to perform data augmentation since the beginning, as we have to acknowledge that 600 observations are not much for training a neural network. This procedure is related to time shifting, that can be performed with the np.roll() method on an audio. Indeed, the end of same of sub-sample will often be the beginning of another one.    
 
 ### Train/Test sets
@@ -39,7 +43,7 @@ I used the librosa library in Python to convert my audio signals to Mel spectrog
 ![image](https://github.com/JadeArpaliangeas/Speech-Emotion-Recognition-CNN/assets/149436763/0d6bada1-54c3-4e79-b5cf-4dad64ef90f4)
 
 As human perceive pitch differences more accurately at lower frequencies than at higher frequencies, the perception of a signal’s frequence variation is not linear for human ear. The Mel spectrogram transforms the classical spectrogram into a representation of the audio information that matches with the hearing of a typical human.
-At the right is the Mel spectrogram describing the same recording, and below is the correspondence between frequencies and Mel scale.
+At the left is the Mel spectrogram describing the same recording, and at the rigth is the correspondence between frequencies and Mel scale.
 
 ![image](https://github.com/JadeArpaliangeas/Speech-Emotion-Recognition-CNN/assets/149436763/f331a0a3-ee05-41c7-8f5d-1b457c71b313)
 ![image](https://github.com/JadeArpaliangeas/Speech-Emotion-Recognition-CNN/assets/149436763/639acaea-7a4d-4a3e-a0ce-3571168668e9)
@@ -57,6 +61,7 @@ The first model used is the one described underneath: (batch_size = 64 and epoch
 ### Results Model1:
 
 It yields the following confusion matrices (normalized of true labels at the left = recall, normalized on predicted labels at the right = precision):  
+
 The corresponding labels are (in order: anger – disgust – fear – happiness- sadness)
 ![image](https://github.com/JadeArpaliangeas/Speech-Emotion-Recognition-CNN/assets/149436763/891b8a60-f7bc-4645-afd6-c875b7c0dd9d)
 ![image](https://github.com/JadeArpaliangeas/Speech-Emotion-Recognition-CNN/assets/149436763/a819731d-fd2c-4b4c-b96c-6216d204a094)
@@ -104,13 +109,18 @@ We notice that the labels 2 and 3 (fear and happiness) are the least well recogn
 
 ## Data augmentation
 We cannot apply the classical methods for data augmentation for datasets of images. Indeed, for instance, a horizontal flip or a rotation would substantially alter the spectrogram and the sound that it represents. Therefore, I decided to augment the audio signal before computing the Mel spectrogram. 
+
 As explained earlier, the pre-processing step already embeds a step that can be considered part of the data augmentation.
-Besides, and in order to improve the previous results, I decided to increase 3x the size of my dataset by applying a data augmentation method. I chose the pitch shifting method that I implemented thanks to the librosa library. For each segment, I added to the dataset 2 modified versions: 1 with a pitch shifting of +1/3 octave and the other with -1/3 octave. The idea was to create the other gender equivalent of each segment. I found out that the males’ voice I usually 1 octave lower than females’ voice. However, when listening to recordings tuned with this setting, it sounded awfully fake, so I decided to transform by only a third of an octave, as it is what seemed the most accurate translation from male to female according to my ear (I listened to the pitch shifted audio with various shifting intensities). It would have been interesting to know in advance if the utterance was spoken by a male or a female, to apply the corresponding transformation. Nonetheless, I did not have this information so I simply applied both shifting (+ and – 1/3 octave) to each recording. This might have created some unrealistic audio. But I do not think it would lower the accuracy of my CNN. 
+Besides, and in order to improve the previous results, I decided to increase 3x the size of my dataset by applying a data augmentation method. I chose the pitch shifting method that I implemented thanks to the librosa library. For each segment, 
+
+I added to the dataset 2 modified versions: 1 with a pitch shifting of +1/3 octave and the other with -1/3 octave. The idea was to create the other gender equivalent of each segment. I found out that the males’ voice I usually 1 octave lower than females’ voice. However, when listening to recordings tuned with this setting, it sounded awfully fake, so I decided to transform by only a third of an octave, as it is what seemed the most accurate translation from male to female according to my ear (I listened to the pitch shifted audio with various shifting intensities). It would have been interesting to know in advance if the utterance was spoken by a male or a female, to apply the corresponding transformation. Nonetheless, I did not have this information so I simply applied both shifting (+ and – 1/3 octave) to each recording. This might have created some unrealistic audio. But I do not think it would lower the accuracy of my CNN. 
+
 NB: Of course I did not augment the test set. 
 
 ### Results:
 The last model (model3) was trained with the augmented dataset, and the results are globally the same than without the last data augmentation step: average= 63.98 and sd= 0.05. This step is resource-consuming and looks useless. 
-Conclusion:
+
+## Conclusion:
 Speech Emotion Recognition has been performed on the AESDD dataset using Mel Spectograms and CNN models. The best model (Model3) was able to recognize the 5 emotions with an accuracy of almost 2 thirds (64%), whereas a random classification would reach an accuracy of 20% as there are 5 distinct classes. I believe this result is pretty good for a simple Neural Network design with only a few hundred audio recordings. The data Augmentation step did not bring a concrete improvement to the accuracy of the Model3.
 
 ## Possible improvements
