@@ -19,6 +19,9 @@ Different Hyperparameters such as Kernel size and Dropout rate were tested.
 Cross-validation was implemented and confusion matrices were printed to assess the models.  
 Use of Pitch Shifting as a data augmentation procedure.
 
+![image](https://github.com/JadeArpaliangeas/Speech-Emotion-Recognition-CNN/assets/149436763/f37a04d3-81ba-4503-ad73-5e6a080b55e6)
+
+
 ## Conclusion: 
 3 model architecture were tested, with different parameters (kernel_size and dropout_rate).
 Data augmentation was attempted, but was declared useless.
