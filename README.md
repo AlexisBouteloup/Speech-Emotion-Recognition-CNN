@@ -1,7 +1,11 @@
 # Speech-Emotion-Recognition-CNN
 
+<img src="https://media.giphy.com/media/NqhohLDKCaixsl2Ygb/giphy.gif" width="200">
+
 ## Objective of the project:
 The goal of the project is to use Convolutional neural Networks on Mel spectrogram in order to perform Speech Emotion Recognition (SER) on the Acted Emotional Speech Dynamic Database (AESDD) containing acted audio recordings of emotions in Greek. 
+
+<img src="https://media.giphy.com/media/186DbBrxSQZOmY9NTp/giphy.gif" width="200">
 
 ## Materials:
 I worked on python 3.9 in Anaconda Jupyter Notebook. The following libraries were used in addition to the classical python libraries: Librosa, os, tensorflow, keras, scipy, soundfile, tqdm (to monitor progression of the code completion).
