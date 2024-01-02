@@ -11,6 +11,7 @@ The database used for this project is the Acted Emotional Speech Dynamic Databas
 LibsndfileError: Error opening 'C:/Users/jadea/Acted Emotional Speech Dynamic Database\\Acted Emotional Speech Dynamic Database\\sadness\\s05 (3).wav': Error in WAV file. No 'data' chunk marker.
 I removed this recording from the database. The numbers of recordings for each emotion are almost equal, so we can state that the dataset is well balanced. The sampling rate is 44100HZ for all recordings. Concerning the lengths of the audios, underneath is the histogram of the distribution of the durations of audios:
 
+![image](https://github.com/JadeArpaliangeas/Speech-Emotion-Recognition-CNN/assets/149436763/65139538-2b96-4ff5-9f54-30562b7d25fe)
 
 
 
