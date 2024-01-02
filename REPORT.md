@@ -96,6 +96,7 @@ Finally, I tried to add a 3rd convolutional layer with 64 filters and a 3rd Max 
 
 ### Model3 Results:
 I added a 4th CONV and MaxPool layers, and the cross-validation accuracy increases further: 64.12%, sd= 0.057. The last iteration of the cross-validation process showed these confusion matrices:
+
 ![image](https://github.com/JadeArpaliangeas/Speech-Emotion-Recognition-CNN/assets/149436763/29dd45fc-585e-49e7-a793-8858f67e4833)
 ![image](https://github.com/JadeArpaliangeas/Speech-Emotion-Recognition-CNN/assets/149436763/84459395-73dd-45c0-b4f3-482e6a0548eb)
     
